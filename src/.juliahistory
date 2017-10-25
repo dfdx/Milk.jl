@@ -1,0 +1,136 @@
+conv2d
+Pkg.test("XGrad")
+import XGrad: deriv
+deriv(:(conv2d(a, b; stride=2)), :a)
+methods(deriv)
+deriv(:(conv2d(a, b; stride=2)), [rand(7,7,3,2,), rand(3,3,3,2)], 1)
+ex = :(conv2d(a, b; stride=2))
+pat = :(conv2d(x, w; opts...))
+dep_vals = [rand(7,7,3,2,), rand(3,3,3,2)]
+idx = 1
+DIFF_RULES
+XGrad.DIFF_RULES
+rule = XGrad.DIFF_RULES[end]
+import Espresso: get_arg_names
+import XGrad: get_arg_names
+idx != vidx
+ idx = 2
+rule
+get_arg_names(tpat)
+import XGrad: get_arg_types
+for n in names(XGrad, true) @eval import XGrad: $n end
+matchex(:(conv2d(_x, _y; o...)), :(conv2d(a, b; stride=2)))
+import Espresso: matchex
+matchex(:(conv2d(_x, _y; o...)), :(conv2d(a, b; stride=2)))
+matchex(:(conv2d(_x, _y; _o...)), :(conv2d(a, b; stride=2)))
+matchex(:(conv2d(_x, _y; _o...)), :(conv2d(a, b; stride=2))) |> get |> x -> x[:_o]
+tpat
+tpat.args
+get_arg_names(tpat)
+get_arg_types(tpat)
+idx != vidx
+idx = 1
+length(dep_vals) != length(dep_types) ||
+        !all(isa(v, t) for (v, t) in zip(dep_vals, dep_types))
+parse_call_args(pat)
+for n in names(Espresso, true) @eval import Espresso: $n end
+parse_call_args(pat)
+:(foo(x; s=1))
+:(foo(x; s=1)) |> dump
+:(foo(x; s=1)),args
+:(foo(x; s=1)).args
+:(foo(x; s=1)) |> parse_call_args
+parse_call_args(pat)
+pat
+tpaat
+tpat
+parse_call_args(tpat)
+tpat.args
+tpat.args[2]
+tpat.args[2].args
+:(foo(x; s=1)).args[2].args
+without_types(rpat)
+rpat
+pat
+!matchingex(pat, ex; phs=DIFF_PHS)
+deriv(:(conv2d(a, b; stride=2)), [rand(7,7,3,2,), rand(3,3,3,2)], 1)
+quit()
+deriv(:(conv2d(a, b; opts...)), [rand(7,7,3,1), rand(3,3,3,1)], 2)
+import XGrad: deriv
+deriv(:(conv2d(a, b; opts...)), [rand(7,7,3,1), rand(3,3,3,1)], 2)
+import Espresso: @inplacerule
+g = ExGraph(:(c = conv2d(a, b; o...); a=rand(7,7,3,1), b=rand(3,3,3,1))
+)
+g = ExGraph(:(c = conv2d(a, b; o...); a=rand(7,7,3,1), b=rand(3,3,3,1)))
+using Espresso
+g = ExGraph(:(c = conv2d(a, b; o...); a=rand(7,7,3,1), b=rand(3,3,3,1)))
+g = ExGraph(:(c = conv2d(a, b; o...)); a=rand(7,7,3,1), b=rand(3,3,3,1))
+g = ExGraph(:(c = conv2d(a, b; stride=1)); a=rand(7,7,3,1), b=rand(3,3,3,1))
+to_inplace(g)
+canonical(Main, :conv2d)
+Espresso.canonical(Main, :conv2d)
+Module
+tpat =  :(y = conv2d(x, w; _opts))
+rpat = :(conv2d!(y, x, w; _opts))
+import Espresso: canonical
+tpat.args[2].args[1]
+@doc findex
+find(:(_f(_)), pat)
+findex(:(_f(_)), pat)
+findex(:(_f(_)), ex)
+findex(:(_f(_)), tpat)
+pat
+findex(:(_m._f(_)), tpat)
+findex(:(_m._f(_...)), tpat)
+tpat
+findex(:(_x = _), tpat)
+NNlib.conv2d!
+rpat = :(conv2d(y, x, w; _opts))
+quit()
+Espresso.TO_BUFFERED_VEC_RULES
+g = ExGraph(:(c = conv2d(a, b; stride=2)); a=rand(2), b=rand(2))
+to_inplace(g)
+g = ExGraph(:(c = conv2d(a, b; stride=2)); a=rand(7,7,3,1), b=rand(3,3,3,1))
+to_inplace(g)
+XDiff.load_espresso()
+XGrad.load_espresso()
+TO_BUFFERED_VEC_RULES
+Espresso.TO_BUFFERED_VEC_RULES
+RULES = Espresso.TO_BUFFERED_VEC_RULES
+import Espresso: @inplacerule
+to_inplace(g)
+for n in names(Espresso, true) import Espresso: $n end
+for n in names(Espresso, true) @eval import Espresso: $n end
+to_inplace(g)
+g
+nd = g[3]
+to_inplace(g, ns)
+to_inplace(g, nd)
+@which to_inplace(g, nd)
+to_expr_kw(nd)
+nd.meta
+g[3].meta
+ex = ExH(:(c = conv2d(a, b; stride=2)))
+ex = ExH(:(conv2d(a, b; stride=2)))
+op in CONST_OPS
+g = ExGraph()
+g
+g[1].meta
+meta
+@which  push!(g, :call, genname(), pex; meta=meta)
+@which push!(g, :call, genname(), pex; meta=meta)
+ex = ExH(:(conv2d(a, b; stride=2)))
+g
+g[2].meta
+g[2].meta
+g[end].meta
+meta
+C= :call
+var = genname()
+ex = :(c2d(a,b))
+val = nothing
+meta
+nd.meta
+g
+g[end].meta
+quit()
