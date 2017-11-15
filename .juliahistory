@@ -171,3 +171,105 @@ to_inplace(g, nd)
 !isnull(rex)
 get(rex)
 quit()
+xavier_init
+16 * 5 * 5
+m.Wfc1
+c2_f
+Wfc1
+m.Wfc1
+quit()
+xdiff(:(sum(pool(x))); x=randn(7,7,3,1))
+ for n in  names(XGrad, true)
+@eval input XGrad: $n end
+ for n in  names(XGrad, true) @eval import XGrad: $n end
+ for n in  names(Espresso, true) @eval import Espresso: $n end
+g
+dg
+dg
+rev_step!(g, dg, g[end]); dg
+@doc @diffrule
+quit()
+X = X_train[:,:,:,1:10]
+y = y_train[:,:,:,1:10]
+y = y_train[:,,1:10]
+y = y_train[:,1:10]
+xdiff(loss; m=m, X=X, y=y)
+for n in names(XGrad,  true) @eval import XGrad: $n end
+ctx = Dict()
+inputs = [:m => m, :X => X, :y => y]
+for n in names(Espresso,  true) @eval import Espresso: $n end
+f = loss
+forward_pass!(g)
+DIFF_RULES
+len(KNOWN_FUNCS)
+length(KNOWN_FUNCS)
+length(known_funcs)
+vec(graph_funcs)
+collect(graph_funcs)
+collect(graph_funcs)[3]
+cf = collect(graph_funcs)[3]
+typeof(cf)
+cf in known_funcs
+known_funcs
+collect(known_funcs)
+for f in collect(known_funcs) println(f) end
+for (i,f) in enumerate(known_funcs) println(f) end
+for (i,f) in enumerate(known_funcs) println(i, f) end
+collect(known_funcs)[23]
+collect(known_funcs)[23] == cf
+cfr = collect(known_funcs)[23] 
+typeof(cfr)
+dump(cfr)
+dump(cf)
+sanitize(cfr)
+sanitize(cfr) |> dump
+known_funcs
+map(sanitize, known_funcs)
+cf in map(sanitize, known_funcs)
+cf in graph_funcs
+forward_pass!(g)
+quit()
+instanceof
+new
+struct_like
+try C2() catch e ge = e end
+ge
+ge = nothing
+try C2() catch e ge = e end
+ge
+ge
+fieldnames(g)
+fieldnames(ge)
+g.f
+ge.f
+ge.args
+ge.world
+struct_like(m)
+struct_like(m)
+struct_like(m)
+struct_like(m)
+struct_like(m)
+methods(MethodError)
+methods(MethodError)
+struct_like(m)
+struct_like(m)
+quit()
+quit()
+using CuArrays
+Pkg.build("CuArrays")
+using CuArrays
+quit()
+cross_entropy(y, predict(m, X))
+y
+predict(m, X)
+predict(m, X) |> maximum
+log.(predict(m, X))
+log.(predict(m, X)) |> mean
+cross_entropy(predict(m, X), y)
+cross_entropy(, y)
+predict(m, X)
+cross_entropy(y, predict(m, X))
+ŷ = predict(m, X)
+CUDAnative.log.(ŷ)
+sum(CUDAnative.log.(ŷ))
+CUDAnative.log(1.0)

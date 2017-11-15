@@ -1,6 +1,9 @@
 
 # TODO: import this stuff from NNlib instead when corresponding PRs are merged
 
+include("linalg.jl")
+
+
 ## Convolutions on CPU. Almost all the code is borrowed from Knet.jl
 ## For GPU versions see CUDNN.jl
 

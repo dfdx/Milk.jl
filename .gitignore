@@ -6,3 +6,4 @@
 *.so
 *.o
 .juliahistory
+data/
