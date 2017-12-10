@@ -17,7 +17,7 @@ function predict(m, X::AbstractArray)
     c2 = conv2d(p1, m.Wc2)
     p2 = pool(c2)
     cc = reshape(p2, 4*4*6, size(p1, 4))
-    res = logistic.(m.W1 * cc .+ m.b)
+    res = sigmoid.(m.W1 * cc .+ m.b)
     return res
 end
 
@@ -32,7 +32,7 @@ end
 
 function partial_fit!(m, X::AbstractArray, y::AbstractMatrix; mem=Dict())
     # opt = ModelOptimizer(m, Momentum(η=0.001, γ=0.9))
-    opt = ModelOptimizer(m, Adam())
+    opt = ModelOptimizer(m, Adam(α=0.001))
     cost, dm, dX, dy = xgrad(loss; mem=mem, m=m, X=X, y=y)
     update_params!(opt, m, dm)
     return cost

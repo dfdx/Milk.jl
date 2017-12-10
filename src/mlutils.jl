@@ -6,6 +6,12 @@ function xavier_init(dim_in, dim_out; c=1)
 end
 
 
+function class_to_index(classes)
+    classes = sort(classes)
+    return Dict(c => i for (i, c) in enumerate(classes))
+end
+
+
 function one_hot(::Type{T}, num_classes::Int, vals::AbstractVector{<:Integer}) where T
     ret = zeros(T, num_classes, length(vals))
     for (i, v) in enumerate(vals)
@@ -14,13 +20,25 @@ function one_hot(::Type{T}, num_classes::Int, vals::AbstractVector{<:Integer}) w
     return ret
 end
 
-one_hot(num_classes, vals) =  one_hot(Float64, num_classes, vals)
+one_hot(num_classes::Integer, vals) = one_hot(Float64, num_classes, vals)
 
+function one_hot(::Type{T}, c2i::Dict, vals) where T
+    result = zeros(T, length(c2i), length(vals))
+    for (j, val) in enumerate(vals)
+        i = c2i[val]
+        result[i, j] = one(T)
+    end
+    return result
+end
+
+one_hot(c2i::Dict, vals) = one_hot(Float64, c2i, vals)
 
 
 function accuracy(ŷ::AbstractMatrix, y::AbstractMatrix)
     return mean(findmax(@view ŷ[:,i])[2] == findmax(@view y[:,i])[2] for i=1:size(ŷ,2))
 end
+
+
 
 
 # todo: don't depend on CuArrays

@@ -46,8 +46,8 @@ function predict(m::CIFAR10Model, X::AbstractArray{<:AbstractFloat, 4})
     c2_f = reshape(p2, 400, size(p2, 4))
     fc1 = relu.(m.Wfc1 * c2_f .+ m.bfc1)
     fc2 = relu.(m.Wfc2 * fc1 .+ m.bfc2)
-    # fc3 = logistic.(m.Wfc3 * fc2 .+ m.bfc3)
-    fc3 = m.Wfc3 * fc2 .+ m.bfc3
+    fc3 = sigmoid.(m.Wfc3 * fc2 .+ m.bfc3)
+    # fc3 = m.Wfc3 * fc2 .+ m.bfc3
     return fc3
 end
 
@@ -56,14 +56,14 @@ end
 #     c1_f = reshape(X, 32 * 32 * 3, size(X, 4))
 #     # c1 = conv2d(X, m.Wc1)  # 32x32x3xN => 28x28x6xN
 #     # c1_f = reshape(c1, 4704, size(c1, 4))
-#     fc3 = logistic.(m.Wfc3 * c1_f .+ m.bfc3)
+#     fc3 = sigmoid.(m.Wfc3 * c1_f .+ m.bfc3)
 #     return fc3
 # end
 
 
 function loss(m::CIFAR10Model, X::AbstractArray{F, 4}, y::AbstractMatrix{F}) where {F <:AbstractFloat}
     ŷ = predict(m, X)
-    return pytorch_cross_entropy(y, ŷ)
+    return pytorch_cross_entropy(ŷ, y)
 end
 
 # function loss(m::CIFAR10Model, X::AbstractArray{F, 4}, y::AbstractMatrix{F}) where {F <:AbstractFloat}
@@ -73,7 +73,8 @@ end
 
 
 function partial_fit!(m::CIFAR10Model, X::AbstractArray, y::AbstractMatrix; mem=Dict())
-    opt = ModelOptimizer(m, Momentum(η=0.001, γ=0.9))
+    opt = ModelOptimizer(m, Momentum(η=0.05, γ=0.9))
+    # opt = ModelOptimizer(m, Adam(α=0.01))
     cost, dm, dX, dy = xgrad(loss; mem=mem, m=m, X=X, y=y)
     update_params!(opt, m, dm)
     return cost
@@ -88,12 +89,12 @@ function fit!(m, X::AbstractArray, Y::AbstractMatrix; cuda=false, n_epochs=100)
     @time for epoch=1:n_epochs
         print("Epoch: $epoch: ")
         cost = 0
-        for (x, y) in batchview((X, Y))
+        for (x, y) in batchview((X, Y); size=100)
             x, y = map(copy, (x, y))
             if cuda
                 x, y = map(to_cuda, (x, y))
             end
-            cost = partial_fit!(m, x, y)            
+            cost = partial_fit!(m, x, y; mem=mem)
         end
         println(cost)
     end

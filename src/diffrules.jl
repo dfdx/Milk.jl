@@ -17,16 +17,18 @@
 @diffrule NNlib.pool(x) x NNlib.pool_grad(x, pool(x), ds)
 @diffrule NNlib.pool(x; _opts...) x NNlib.pool_grad(x, pool(x), ds; _opts...)
 
+@diffrule NNlib.σ(x::Number) x (NNlib.σ(x) .* (1 .- NNlib.σ(x)) .* ds)
+@diffrule NNlib.sigmoid(x::Number) x (NNlib.σ(x) .* (1 .- NNlib.σ(x)) .* ds)
+
+@diffrule NNlib.relu(x::Number) x (x .> 0) .* ds
+
+# logistic(x) = 1 ./ (1 + exp.(-x))
+# @diffrule logistic(x::Number) x (logistic(x) .* (1 .- logistic(x)) .* ds)
+
+# softplus(x) = log(exp(x) + 1)
+# @diffrule softplus(x::Number) x logistic(x) .* ds
 
 
-logistic(x) = 1 ./ (1 + exp.(-x))
-@diffrule logistic(x::Number) x (logistic(x) .* (1 .- logistic(x)) .* ds)
 
-softplus(x) = log(exp(x) + 1)
-@diffrule softplus(x::Number) x logistic(x) .* ds
-
-
-relu(x::Number) = max(x, 0)
-@diffrule relu(x::Number) x (x .> 0) .* ds
-
-
+@diffrule CUDAnative.log(x::Real) x ds / x
+@diffrule CUDAnative.log(x::AbstractArray) x ds ./ x
