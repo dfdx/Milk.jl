@@ -1,13 +1,4 @@
 
-# @diffrule conv2d(x, w) w conv2d_grad_w(x, w, ds)
-# @diffrule conv2d(x, w) x conv2d_grad_x(x, w, ds)
-
-# @diffrule conv2d(x, w; _opts...) w conv2d_grad_w(x, w, ds; _opts...)
-# @diffrule conv2d(x, w; _opts...) x conv2d_grad_x(x, w, ds; _opts...)
-
-# @diffrule pool(x) x pool_grad(x, pool(x), ds)
-# @diffrule pool(x; _opts...) x pool_grad(x, pool(x), ds; _opts...)
-
 @diffrule NNlib.conv2d(x, w) w NNlib.conv2d_grad_w(x, w, ds;)
 @diffrule NNlib.conv2d(x, w) x NNlib.conv2d_grad_x(x, w, ds)
 
@@ -27,8 +18,6 @@
 
 # softplus(x) = log(exp(x) + 1)
 # @diffrule softplus(x::Number) x logistic(x) .* ds
-
-
 
 @diffrule CUDAnative.log(x::Real) x ds / x
 @diffrule CUDAnative.log(x::AbstractArray) x ds ./ x

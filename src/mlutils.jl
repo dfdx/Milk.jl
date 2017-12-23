@@ -1,3 +1,6 @@
+## mlutils.jl - a set of ML utilities for parameter initalization, performance metrics, etc.
+
+## initialization
 
 function xavier_init(dim_in, dim_out; c=1)
     low = -c * sqrt(6.0 / (dim_in + dim_out))
@@ -5,6 +8,8 @@ function xavier_init(dim_in, dim_out; c=1)
     return rand(Uniform(low, high), dim_in, dim_out)
 end
 
+
+## one-hot encoding
 
 function class_to_index(classes)
     classes = sort(classes)
@@ -34,34 +39,38 @@ end
 one_hot(c2i::Dict, vals) = one_hot(Float64, c2i, vals)
 
 
+## metrics
+
 function accuracy(ŷ::AbstractMatrix, y::AbstractMatrix)
     return mean(findmax(@view ŷ[:,i])[2] == findmax(@view y[:,i])[2] for i=1:size(ŷ,2))
 end
 
 
+## CUDA support
 
+@require CuArrays begin
 
-# todo: don't depend on CuArrays
-using CuArrays
+    """
+    Convert to a corresponding CUDA object.
 
-to_cuda(a::AbstractArray{T,N}) where {T,N} = convert(CuArray{Float32,N}, a)
-to_cuda(a::CuArray) = a
-
-import Espresso
-
-function to_cuda(m)
-    if isstruct(m)
-        new_m = Espresso.struct_like(m)
-        for fld in fieldnames(typeof(m))
-            v = getfield(m, fld)
-            new_v = to_cuda(v)
-            setfield!(new_m, fld, new_v)
+    For arrays returns an instance of CuArray.
+    For structs returns similar struct with all arrays fields converted to CuArray.
+    """
+    to_cuda(a::AbstractArray{T,N}) where {T,N} = convert(CuArray{Float32,N}, a)
+    to_cuda(a::CuArray) = a
+    
+    function to_cuda(m)
+        if isstruct(m)
+            new_m = Espresso.struct_like(m)
+            for fld in fieldnames(typeof(m))
+                v = getfield(m, fld)
+                new_v = to_cuda(v)
+                setfield!(new_m, fld, new_v)
+            end
+            return new_m
+        else
+            return m
         end
-        return new_m
-    else
-        return m
     end
+
 end
-
-
-

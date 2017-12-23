@@ -1,3 +1,4 @@
+## modelopt.jl - gradient descent optimization subroutines
 
 import GradDescent: Optimizer
 

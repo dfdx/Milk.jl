@@ -22,18 +22,6 @@ CIFAR10Model() = CIFAR10Model(
     randn(10) / 10
 )
 
-# mutable struct CIFAR10Model
-#     # W* - weight; b* - bias; c1 - convolution 1; fc1 - fully connected 1
-#     # Wc1    # (H,W,I,O) == (5,5,3,6)
-#     Wfc3   # (10,84)
-#     bfc3   # (10,)
-# end
-
-# CIFAR10Model() = CIFAR10Model(
-#     xavier_init(10, 32 * 32 * 3),
-#     randn(10)
-# )
-
 
 Base.show(io::IO, m::CIFAR10Model) = print(io, "CIFAR10Model()")
 
@@ -47,29 +35,14 @@ function predict(m::CIFAR10Model, X::AbstractArray{<:AbstractFloat, 4})
     fc1 = relu.(m.Wfc1 * c2_f .+ m.bfc1)
     fc2 = relu.(m.Wfc2 * fc1 .+ m.bfc2)
     fc3 = sigmoid.(m.Wfc3 * fc2 .+ m.bfc3)
-    # fc3 = m.Wfc3 * fc2 .+ m.bfc3
     return fc3
 end
 
 
-# function predict(m::CIFAR10Model, X::AbstractArray{<:AbstractFloat, 4})
-#     c1_f = reshape(X, 32 * 32 * 3, size(X, 4))
-#     # c1 = conv2d(X, m.Wc1)  # 32x32x3xN => 28x28x6xN
-#     # c1_f = reshape(c1, 4704, size(c1, 4))
-#     fc3 = sigmoid.(m.Wfc3 * c1_f .+ m.bfc3)
-#     return fc3
-# end
-
-
 function loss(m::CIFAR10Model, X::AbstractArray{F, 4}, y::AbstractMatrix{F}) where {F <:AbstractFloat}
     ŷ = predict(m, X)
-    return pytorch_cross_entropy(ŷ, y)
+    return cross_entropy_loss(ŷ, y)
 end
-
-# function loss(m::CIFAR10Model, X::AbstractArray{F, 4}, y::AbstractMatrix{F}) where {F <:AbstractFloat}
-#     ŷ = predict(m, X)
-#     return cross_entropy(y, ŷ)
-# end
 
 
 function partial_fit!(m::CIFAR10Model, X::AbstractArray, y::AbstractMatrix; mem=Dict())
