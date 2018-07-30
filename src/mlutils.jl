@@ -2,12 +2,11 @@
 
 ## initialization
 
-function xavier_init(dim_in, dim_out; c=1)
+function xavier(dim_in, dim_out; c=1)
     low = -c * sqrt(6.0 / (dim_in + dim_out))
     high = c * sqrt(6.0 / (dim_in + dim_out))
-    return rand(Uniform(low, high), dim_in, dim_out)
+    return rand(dim_in, dim_out) .* (high - low) .+ low
 end
-
 
 ## one-hot encoding
 
@@ -43,6 +42,32 @@ one_hot(c2i::Dict, vals) = one_hot(Float64, c2i, vals)
 
 function accuracy(ŷ::AbstractMatrix, y::AbstractMatrix)
     return mean(findmax(@view ŷ[:,i])[2] == findmax(@view y[:,i])[2] for i=1:size(ŷ,2))
+end
+
+
+
+## eachbatch
+
+struct EachBatch{T}
+    src::AbstractArray{T,2}
+    batch_size::Int
+end
+
+
+function Base.iterate(itr::EachBatch, start::Int)
+    if start > size(itr.src, 2)
+        return nothing
+    else
+        val = itr.src[:, start : min(start + itr.batch_size - 1, size(itr.src, 2))]
+        next_state = start + itr.batch_size
+        return val, next_state
+    end
+end
+Base.iterate(itr::EachBatch) = iterate(itr, 1)
+
+
+function eachbatch(X::AbstractArray{T,2}; size=100) where T
+    return EachBatch(X, size)
 end
 
 

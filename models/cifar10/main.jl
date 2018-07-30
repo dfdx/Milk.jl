@@ -5,7 +5,7 @@ using CUDNN
 include("../../src/core.jl")
 
 using MLDatasets
-using MLDataUtils
+# using MLDataUtils
 using PyPlot
 
 include("model.jl")
