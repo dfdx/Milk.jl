@@ -19,10 +19,8 @@ end
 
 
 """
-Negative log-likelihood. ŷ should be a vector of log probabilities.
+Negative log-likelihood. ŷ should be a vector of normalized log probabilities.
 """
-nll(ŷ::AbstractVector, c::Real) = -ŷ[c]
-
 function nll(ŷ::AbstractMatrix, c::Vector{<:Real})
     loss = 0
     for j=1:size(ŷ, 2)
@@ -32,18 +30,23 @@ function nll(ŷ::AbstractMatrix, c::Vector{<:Real})
     return loss
 end
 
-
-nll_grad(ŷ::AbstractVector, c::Int) = ŷ[c] - 1
-
-function nll_grad(ŷ::AbstractMatrix, c::Vector{Int})
-    # TODO: actually we are looking for dŷ::AbstractMatrix
-    dx = typeof(ŷ)(undef, length(c))
+function nll_grad(ds::Real, ŷ::AbstractMatrix, c::AbstractVector{<:Real})
+    dŷ = zero(ŷ)
+    # assuming instances are on columns, we can make it configurable later
     for j=1:size(ŷ, 2)
-        i = c[j]
-        dx[j] = exp(ŷ[i, j] - 1)
+        dŷ[c[j], j] = -ds
     end
-    return dx
+    return dŷ
 end
+
+nll(ŷ::TArray{T,2}, c::TArray{I,1}) where {T,I} = record!(ŷ.tape, Call, nll, (ŷ, c))
+grad!(dy::TAny, op::Call{typeof(nll), Tuple{TArray{T,2}, TArray{I,1}}}) where {T,I} =
+    record!(dy.tape, Call, nll_grad, op.args)
+
+# nll(ŷ::AbstractVector, c::Real) = -ŷ[c]
+# nll_grad(ŷ::AbstractVector, c::Int) = ŷ[c] - 1 # ???
+
+
 
 
 ## negative log likelihood for proper probability vector/matrix ŷ

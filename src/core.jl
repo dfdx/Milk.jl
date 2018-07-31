@@ -11,7 +11,7 @@ using Requires
 # include("utils.jl")
 # include("diffrules.jl")
 # include("inplacerules.jl")
-# include("losses.jl")
+include("losses.jl")
 # include("modelopt.jl")
 include("functions.jl")
 include("data.jl")
