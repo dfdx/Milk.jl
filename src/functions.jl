@@ -1,5 +1,6 @@
 
 import Yota: grad!, Call, TAny, TArray, TReal, record!
+import NNlib: logsoftmax, ∇logsoftmax
 
 # logistic
 logistic(x) = 1 / (1 + exp(-x))
@@ -17,3 +18,9 @@ function grad!(dy::TAny, ::Val{1}, op::Call{typeof(softplus), Tuple{TReal}})
     x = op.args[1]
     return logistic(x) * dy
 end
+
+
+## NNlib
+NNlib.logsoftmax(x::TArray) = record!(x.tape, Call, logsoftmax, (x,))
+grad!(dy::TAny, ::Val{1}, op::Call{typeof(logsoftmax), Tuple{TArray}}) =
+    record!(x.tape, Call, ∇logsoftmax, (dy, op.args[1]))

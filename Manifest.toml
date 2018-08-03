@@ -109,16 +109,16 @@ uuid = "3a865a2d-5b23-5a0f-bc46-62713ec82fae"
 version = "0.6.2"
 
 [[DataDeps]]
-deps = ["HTTP", "Reexport", "SHA"]
-git-tree-sha1 = "702367cf7dc57c338a70a983a48edd88b096c5be"
+deps = ["DelimitedFiles", "HTTP", "Reexport", "SHA", "Test"]
+git-tree-sha1 = "687644d60b0d6bc95b5a9087f2bdb68b79d2c069"
 uuid = "124859b0-ceae-595e-8997-d05f6a7a8dfe"
-version = "0.3.5"
+version = "0.5.1"
 
 [[DataFrames]]
-deps = ["CategoricalArrays", "CodecZlib", "Compat", "DataStreams", "Missings", "Reexport", "SortingAlgorithms", "StatsBase", "TranscodingStreams", "WeakRefStrings"]
-git-tree-sha1 = "a79e5f3756177f9135f6c2318f4d90bc40da8feb"
+deps = ["CategoricalArrays", "CodecZlib", "Compat", "DataStreams", "Dates", "InteractiveUtils", "LinearAlgebra", "Missings", "Printf", "Random", "Reexport", "SortingAlgorithms", "Statistics", "StatsBase", "Test", "TranscodingStreams", "Unicode", "WeakRefStrings"]
+git-tree-sha1 = "1cc9493d9b659db1fa6d584afc3f73d74341e567"
 uuid = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-version = "0.11.7"
+version = "0.12.0"
 
 [[DataStreams]]
 deps = ["Compat", "Missings", "NamedTuples", "WeakRefStrings"]
@@ -233,9 +233,9 @@ version = "0.2.1"
 
 [[Homebrew]]
 deps = ["BinDeps", "Compat", "JSON", "Libdl", "Unicode"]
-git-tree-sha1 = "3e6d20b90cab32759f38639e2f085b4e5aa17f21"
+git-tree-sha1 = "b8503955180201f902cc23dc0c299584c859f545"
 uuid = "d9be37ee-ecc9-5288-90f1-b9ca67657a75"
-version = "0.6.3"
+version = "0.6.4"
 
 [[ImageCore]]
 deps = ["ColorTypes", "Colors", "FFTW", "FixedPointNumbers", "Graphics", "MappedArrays", "OffsetArrays", "PaddedViews", "Random", "Statistics", "Test"]
@@ -466,11 +466,11 @@ uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [[StatsBase]]
 deps = ["DataStructures", "LinearAlgebra", "Missings", "Printf", "Random", "SortingAlgorithms", "SparseArrays", "Statistics", "Test"]
-git-tree-sha1 = "4271c22ca1faa07c6a27c106b881d42987bfc56d"
+git-tree-sha1 = "515d9c751bc96f9680a2a19f76395ae8ac06a8f5"
 repo-rev = "master"
 repo-url = "https://github.com/JuliaStats/StatsBase.jl.git"
 uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
-version = "0.24.0+"
+version = "0.24.0"
 
 [[Test]]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
@@ -482,10 +482,10 @@ uuid = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
 version = "0.5.3"
 
 [[URIParser]]
-deps = ["Compat", "Unicode"]
-git-tree-sha1 = "0f9c5e2d14e03fbd00696f9394e288bdd5adacbc"
+deps = ["Test", "Unicode"]
+git-tree-sha1 = "6ddf8244220dfda2f17539fa8c9de20d6c575b69"
 uuid = "30578b45-9adc-5946-b283-645ec420af67"
-version = "0.3.1"
+version = "0.4.0"
 
 [[UUIDs]]
 uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
@@ -507,9 +507,9 @@ version = "0.4.7"
 
 [[WinRPM]]
 deps = ["BinDeps", "Compat", "HTTPClient", "LibExpat", "Libdl", "Libz", "SHA", "URIParser"]
-git-tree-sha1 = "43730fcfe2f4921e7cfe1c21a6fdfeabb7ee4d74"
+git-tree-sha1 = "c49429cfb38ece9ccb7604f9ca4c62ac1b772f4b"
 uuid = "c17dfb99-b4f7-5aad-8812-456da1ad7187"
-version = "0.3.2"
+version = "0.3.3"
 
 [[XGrad]]
 deps = ["Espresso", "LinearAlgebra"]
@@ -521,8 +521,8 @@ version = "0.2.0"
 
 [[Yota]]
 deps = ["Espresso", "LinearAlgebra", "Statistics"]
-git-tree-sha1 = "3c6bac3a299ff5565c20f5e6b462409e99ba4f09"
+git-tree-sha1 = "f5f22f2885a842ee145fe6715fb2cbf70841883e"
 repo-rev = "master"
-repo-url = "/home/azhabinski/work/Yota"
+repo-url = "/home/slipslop/work/Yota"
 uuid = "f7b0de00-8e67-11e8-1ba4-09bec8501be6"
 version = "0.1.0"

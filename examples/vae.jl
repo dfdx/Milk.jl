@@ -125,7 +125,7 @@ end
 
 
 function main()
-    X, _ = read_mnist()
+    X, _, _, _ = read_mnist()
     m = VAE{Float64}(784, 500, 200, 20, 200, 500, 784)
     fit!(m, X)
     
