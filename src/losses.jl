@@ -26,7 +26,6 @@ function nll(ŷ::AbstractMatrix, c::Vector{<:Real})
     for j=1:size(ŷ, 2)
         i = c[j]
         loss += -ŷ[i, j]
-        # loss += ŷ[i, j]  # experimental!
     end
     return loss
 end
@@ -35,8 +34,8 @@ function nll_grad(ds::Real, ŷ::AbstractMatrix, c::AbstractVector{<:Real})
     dŷ = zero(ŷ)
     # assuming instances are on columns, we can make it configurable later
     for j=1:size(ŷ, 2)
-        dŷ[c[j], j] = -ds
-        # dŷ[c[j], j] = ds # experimental!
+        i = c[j]
+        dŷ[i, j] = -ds
     end
     return dŷ
 end

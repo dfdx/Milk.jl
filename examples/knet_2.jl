@@ -13,11 +13,13 @@ loss(m,x,ygold) = nll(predict(m,x), ygold)
 
 
 function train(m::Linear, data; lr=0.1)
-    for (x,y) in data
+    for (i, (x,y)) in enumerate(data)
         x = convert(Array{Float32}, x); y = copy(y)
         loss_val, g = grad(loss, m, x, y)
         update!(m, g[1], (x, gx) -> x .- Float32(lr) .* gx)
-        println(loss_val)
+        if i % 100 == 0
+            println("Batch $i: loss = $loss_val")
+        end
     end
     return m
 end
@@ -30,7 +32,7 @@ function main()
     m = Linear(0.1f0*randn(Float32,10,784), zeros(Float32,10,1))
     # println((:epoch, 0, :trn, accuracy(w,dtrn,predict), :tst, accuracy(w,dtst,predict)))
     for epoch=1:10
-        train(m, dtrn; lr=0.5)
+        train(m, dtrn; lr=0.0001)
         # println((:epoch, epoch, :trn, accuracy(w,dtrn,predict), :tst, accuracy(w,dtst,predict)))
     end
 end
